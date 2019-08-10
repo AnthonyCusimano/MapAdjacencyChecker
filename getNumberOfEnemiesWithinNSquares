@@ -1,0 +1,71 @@
+const char MapAdjacencyChecker::getNumberOfEnemiesWithinNSquares(GenericCharacter const* _center, BattleChapter *_theChapter, char const _centerTeam, char const _radius) {
+
+	char T_return = 0;
+
+	//GridPosition T_helper;
+
+	char xOffset = 0;
+	char yOffset = _radius;
+
+	//if center is under the player's control
+	if (_centerTeam == 0) {
+
+		//checking for highest point
+		if (_theChapter->myGrid->theGrid[(int)_center->getMyPosition().x][(int)_center->getMyPosition().y + _radius].isEnemyOccupied) {
+
+			//pls keep me sane
+			//T_helper = _theChapter->myGrid->theGrid[(int)_center->getMyPosition().x][(int)_center->getMyPosition().y + _radius].myPosition;
+
+			for (int i = 0; i < _theChapter->myArmy.size(); ++i) {				
+
+				if (_theChapter->myGrid->theGrid[(int)_center->getMyPosition().x][(int)_center->getMyPosition().y + _radius].myPosition == _theChapter->myArmy[i]->getMyPosition()) {
+
+					//_theChapter->myGrid->theGrid[(int)_center->getMyPosition().x][(int)_center->getMyPosition().y + _radius].AssignType(SQUARE_TYPE_DESERT);
+
+					++T_return;
+
+				}
+
+			}
+
+		}
+
+		//moving down y and expanding along X
+		//as we go down on y, closer to 0, the xOffset should grow
+		for (char i = yOffset; i >= -yOffset; --i) {
+			//this looks terrible
+			for (char j = xOffset; j >= -xOffset; --j) {
+
+				std::cout << "We're in getNumberOfEnemiesWithinNSquares\nJ is " << (int)j  << /*" xOffset is " << (int)xOffset << */" i is " << (int)i << '\n';
+
+				if (_center->getMyPosition().x + j >= 0 && _center->getMyPosition().y + i >= 0)
+					_theChapter->myGrid->theGrid[(int)_center->getMyPosition().x + j][(int)_center->getMyPosition().y + i].AssignType(SQUARE_TYPE_DESERT);
+
+			}
+
+			if (i > 0)
+				++xOffset;
+
+			else/* if (0 > i)*/
+				--xOffset;
+		}
+
+	}
+
+	//if center is under the enemy's control
+	else if (_centerTeam == 1) {
+
+
+
+	}
+
+	//if center is a neutral unit
+	else {
+
+
+
+	}
+
+	return T_return;
+
+}
