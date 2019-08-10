@@ -36,13 +36,21 @@ const char MapAdjacencyChecker::getNumberOfEnemiesWithinNSquares(GenericCharacte
 			//this looks terrible
 			for (char j = xOffset; j >= -xOffset; --j) {
 
-				std::cout << "We're in getNumberOfEnemiesWithinNSquares\nJ is " << (int)j  << /*" xOffset is " << (int)xOffset << */" i is " << (int)i << '\n';
+				//std::cout << "We're in getNumberOfEnemiesWithinNSquares\nJ is " << (int)j  << /*" xOffset is " << (int)xOffset << */" i is " << (int)i << '\n';
 
-				if (_center->getMyPosition().x + j >= 0 && _center->getMyPosition().y + i >= 0)
+				//if (_center->getMyPosition().x + j >= 0 && _center->getMyPosition().y + i >= 0)
+				if (_center->getMyPosition().x + j >= 0 && _center->getMyPosition().y + i >= 0 && _center->getMyPosition().x + j < ::MAP_ONE_LENGTH && _center->getMyPosition().y + i < ::MAP_ONE_HEIGHT) {
+
 					_theChapter->myGrid->theGrid[(int)_center->getMyPosition().x + j][(int)_center->getMyPosition().y + i].AssignType(SQUARE_TYPE_DESERT);
+
+					//checking if a character is actually there
+
+
+				}
 
 			}
 
+			//i checks where we are along Y throughout this process
 			if (i > 0)
 				++xOffset;
 
