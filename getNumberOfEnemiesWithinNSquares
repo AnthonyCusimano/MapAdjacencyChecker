@@ -2,33 +2,11 @@ const char MapAdjacencyChecker::getNumberOfEnemiesWithinNSquares(GenericCharacte
 
 	char T_return = 0;
 
-	//GridPosition T_helper;
-
 	char xOffset = 0;
 	char yOffset = _radius;
 
 	//if center is under the player's control
 	if (_centerTeam == 0) {
-
-		//checking for highest point
-		if (_theChapter->myGrid->theGrid[(int)_center->getMyPosition().x][(int)_center->getMyPosition().y + _radius].isEnemyOccupied) {
-
-			//pls keep me sane
-			//T_helper = _theChapter->myGrid->theGrid[(int)_center->getMyPosition().x][(int)_center->getMyPosition().y + _radius].myPosition;
-
-			for (int i = 0; i < _theChapter->myArmy.size(); ++i) {				
-
-				if (_theChapter->myGrid->theGrid[(int)_center->getMyPosition().x][(int)_center->getMyPosition().y + _radius].myPosition == _theChapter->myArmy[i]->getMyPosition()) {
-
-					//_theChapter->myGrid->theGrid[(int)_center->getMyPosition().x][(int)_center->getMyPosition().y + _radius].AssignType(SQUARE_TYPE_DESERT);
-
-					++T_return;
-
-				}
-
-			}
-
-		}
 
 		//moving down y and expanding along X
 		//as we go down on y, closer to 0, the xOffset should grow
@@ -36,17 +14,39 @@ const char MapAdjacencyChecker::getNumberOfEnemiesWithinNSquares(GenericCharacte
 			//this looks terrible
 			for (char j = xOffset; j >= -xOffset; --j) {
 
-				std::cout << "We're in getNumberOfEnemiesWithinNSquares\nJ is " << (int)j  << /*" xOffset is " << (int)xOffset << */" i is " << (int)i << '\n';
+				//if (_center->getMyPosition().x + j >= 0 && _center->getMyPosition().y + i >= 0)
+				if (_center->getMyPosition().x + j >= 0 && _center->getMyPosition().y + i >= 0 && _center->getMyPosition().x + j < ::MAP_ONE_LENGTH && _center->getMyPosition().y + i < ::MAP_ONE_HEIGHT) {
 
-				if (_center->getMyPosition().x + j >= 0 && _center->getMyPosition().y + i >= 0)
+					//visual aid to see what squares this method is checking
 					_theChapter->myGrid->theGrid[(int)_center->getMyPosition().x + j][(int)_center->getMyPosition().y + i].AssignType(SQUARE_TYPE_DESERT);
+
+					//checking to see if a square is occupied for an enemy
+					if (_theChapter->myGrid->theGrid[(int)_center->getMyPosition().x + j][(int)_center->getMyPosition().y + i].isEnemyOccupied) {
+
+						//for each enemy...
+						for (int i = 0; i < _theChapter->myArmy.size(); ++i) {
+
+							if (_theChapter->myGrid->theGrid[(int)_center->getMyPosition().x + j][(int)_center->getMyPosition().y + i].myPosition == _center->getMyPosition()) {
+
+								++T_return;
+
+								break;
+
+							}							
+
+						}
+
+					}
+
+				}
 
 			}
 
+			//i checks where we are along Y throughout this process
 			if (i > 0)
 				++xOffset;
 
-			else/* if (0 > i)*/
+			else
 				--xOffset;
 		}
 
@@ -67,5 +67,3 @@ const char MapAdjacencyChecker::getNumberOfEnemiesWithinNSquares(GenericCharacte
 	}
 
 	return T_return;
-
-}
