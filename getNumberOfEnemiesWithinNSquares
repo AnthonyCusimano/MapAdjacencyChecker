@@ -11,7 +11,7 @@ const char MapAdjacencyChecker::getNumberOfEnemiesWithinNSquares(GenericCharacte
 		//moving down y and expanding along X
 		//as we go down on y, closer to 0, the xOffset should grow
 		for (char i = yOffset; i >= -yOffset; --i) {
-			//this looks terrible
+			//left to right along x
 			for (char j = xOffset; j >= -xOffset; --j) {
 
 				//if (_center->getMyPosition().x + j >= 0 && _center->getMyPosition().y + i >= 0)
@@ -20,7 +20,7 @@ const char MapAdjacencyChecker::getNumberOfEnemiesWithinNSquares(GenericCharacte
 					//visual aid to see what squares this method is checking
 					_theChapter->myGrid->theGrid[(int)_center->getMyPosition().x + j][(int)_center->getMyPosition().y + i].AssignType(SQUARE_TYPE_DESERT);
 
-					//checking to see if a square is occupied for an enemy
+					//checking to see if a square is occupied by an enemy
 					if (_theChapter->myGrid->theGrid[(int)_center->getMyPosition().x + j][(int)_center->getMyPosition().y + i].isEnemyOccupied) {
 
 						++T_return;
@@ -44,7 +44,36 @@ const char MapAdjacencyChecker::getNumberOfEnemiesWithinNSquares(GenericCharacte
 	//if center is under the enemy's control
 	else if (_centerTeam == 1) {
 
-		
+		//moving down y and expanding along X
+		//as we go down on y, closer to 0, the xOffset should grow
+		for (char i = yOffset; i >= -yOffset; --i) {
+			//left to right along x
+			for (char j = xOffset; j >= -xOffset; --j) {
+
+				//if (_center->getMyPosition().x + j >= 0 && _center->getMyPosition().y + i >= 0)
+				if (_center->getMyPosition().x + j >= 0 && _center->getMyPosition().y + i >= 0 && _center->getMyPosition().x + j < ::MAP_ONE_LENGTH && _center->getMyPosition().y + i < ::MAP_ONE_HEIGHT) {
+
+					//visual aid to see what squares this method is checking
+					_theChapter->myGrid->theGrid[(int)_center->getMyPosition().x + j][(int)_center->getMyPosition().y + i].AssignType(SQUARE_TYPE_DESERT);
+
+					//checking to see if a square is occupied by an ally (of the player)
+					if (_theChapter->myGrid->theGrid[(int)_center->getMyPosition().x + j][(int)_center->getMyPosition().y + i].isAllyOccupied) {
+
+						++T_return;
+
+					}
+
+				}
+
+			}
+
+			//i checks where we are along Y throughout this process
+			if (i > 0)
+				++xOffset;
+
+			else
+				--xOffset;
+		}
 
 	}
 
