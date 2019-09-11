@@ -14,7 +14,7 @@ const char MapAdjacencyChecker::getNumberOfCharactersWithinNSquares(GenericChara
 			//if (_center->getMyPosition().x + j >= 0 && _center->getMyPosition().y + i >= 0)
 			if (_center->getMyPosition().x + j >= 0 && _center->getMyPosition().y + i >= 0 && _center->getMyPosition().x + j < ::MAP_ONE_LENGTH && _center->getMyPosition().y + i < ::MAP_ONE_HEIGHT) {
 
-				//visual aid to see what squares this method is checking
+				//visual aid to see what squares this method is checking DEBUG
 				_theGrid->theGrid[(int)_center->getMyPosition().x + j][(int)_center->getMyPosition().y + i].AssignType(SQUARE_TYPE_DESERT);
 
 				//checking to see if a square is occupied by anything
@@ -22,7 +22,9 @@ const char MapAdjacencyChecker::getNumberOfCharactersWithinNSquares(GenericChara
 					_theGrid->theGrid[(int)_center->getMyPosition().x + j][(int)_center->getMyPosition().y + i].isAllyOccupied ||
 					_theGrid->theGrid[(int)_center->getMyPosition().x + j][(int)_center->getMyPosition().y + i].isOtherOccupied) {
 
-					++T_return;
+					//if we're not looking at ourselves
+					if (i != 0 || j != 0)
+						++T_return;
 
 				}
 
