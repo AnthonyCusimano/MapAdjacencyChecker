@@ -1,0 +1,44 @@
+const char MapAdjacencyChecker::getNumberOfCharactersWithinNSquares(GenericCharacter const* _center, BattleGrid* _theGrid, char const _radius) {
+
+	char T_return = 0;
+
+	char xOffset = 0;
+	char yOffset = _radius;
+
+	//moving down y and expanding along X
+		//as we go down on y, closer to 0, the xOffset should grow
+	for (char i = yOffset; i >= -yOffset; --i) {
+		//left to right along x
+		for (char j = xOffset; j >= -xOffset; --j) {
+
+			//if (_center->getMyPosition().x + j >= 0 && _center->getMyPosition().y + i >= 0)
+			if (_center->getMyPosition().x + j >= 0 && _center->getMyPosition().y + i >= 0 && _center->getMyPosition().x + j < ::MAP_ONE_LENGTH && _center->getMyPosition().y + i < ::MAP_ONE_HEIGHT) {
+
+				//visual aid to see what squares this method is checking
+				_theGrid->theGrid[(int)_center->getMyPosition().x + j][(int)_center->getMyPosition().y + i].AssignType(SQUARE_TYPE_DESERT);
+
+				//checking to see if a square is occupied by anything
+				if (_theGrid->theGrid[(int)_center->getMyPosition().x + j][(int)_center->getMyPosition().y + i].isEnemyOccupied || 
+					_theGrid->theGrid[(int)_center->getMyPosition().x + j][(int)_center->getMyPosition().y + i].isAllyOccupied ||
+					_theGrid->theGrid[(int)_center->getMyPosition().x + j][(int)_center->getMyPosition().y + i].isOtherOccupied) {
+
+					++T_return;
+
+				}
+
+			}
+
+		}
+
+		//i checks where we are along Y throughout this process
+		if (i > 0)
+			++xOffset;
+
+		else
+			--xOffset;
+
+	}
+
+	return T_return;
+
+}
