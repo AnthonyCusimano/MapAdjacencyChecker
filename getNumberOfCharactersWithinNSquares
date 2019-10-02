@@ -14,9 +14,6 @@ const char MapAdjacencyChecker::getNumberOfCharactersWithinNSquares(GenericChara
 			//if (_center->getMyPosition().x + j >= 0 && _center->getMyPosition().y + i >= 0)
 			if (_center->getMyPosition().x + j >= 0 && _center->getMyPosition().y + i >= 0 && _center->getMyPosition().x + j < ::MAP_ONE_LENGTH && _center->getMyPosition().y + i < ::MAP_ONE_HEIGHT) {
 
-				//visual aid to see what squares this method is checking DEBUG
-				_theGrid->theGrid[(int)_center->getMyPosition().x + j][(int)_center->getMyPosition().y + i].AssignType(SQUARE_TYPE_DESERT);
-
 				//checking to see if a square is occupied by anything
 				if (_theGrid->theGrid[(int)_center->getMyPosition().x + j][(int)_center->getMyPosition().y + i].isEnemyOccupied || 
 					_theGrid->theGrid[(int)_center->getMyPosition().x + j][(int)_center->getMyPosition().y + i].isAllyOccupied ||
@@ -33,6 +30,7 @@ const char MapAdjacencyChecker::getNumberOfCharactersWithinNSquares(GenericChara
 		}
 
 		//i checks where we are along Y throughout this process
+		//DEBUG does this work w/ units directly left or right of us?
 		if (i > 0)
 			++xOffset;
 
